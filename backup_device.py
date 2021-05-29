@@ -2,7 +2,7 @@ def cisco_ios(IP, USER, PASSWORD):
     from netmiko import ConnectHandler
     import datetime
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
-    device = { 'device_type':'cisco_ios', 'ip':IP, 'username':USER, 'password':PASSWORD}
+    device = { 'device_type':'cisco_ios', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
     net_connect = ConnectHandler(**device)
     output = net_connect.send_command("show runn")
     name_file = "/tmp/" + str(IP)+ "-" + DATE +".txt"
@@ -15,7 +15,7 @@ def cisco_s300(IP, USER, PASSWORD):
     from netmiko import ConnectHandler
     import datetime
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
-    device = { 'device_type':'cisco_s300', 'ip':IP, 'username':USER, 'password':PASSWORD}
+    device = { 'device_type':'cisco_s300', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
     net_connect = ConnectHandler(**device)
     output = net_connect.send_command("show runn")
     name_file = "/tmp/" + str(IP)+ "-" + DATE +".txt"
@@ -42,12 +42,14 @@ def smartzone(IP,USER,PASSWORD):
     import time
     import datetime
     import json
+    requests.packages.urllib3.disable_warnings()
     URL = "https://" + IP + ":7443"
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
     headers = {'content-type': 'application/json'}
     payload = {'username' : USER, 'password' : PASSWORD}
-    connection1 = URL + "/api/public/v6_0/session" 
-    response1 = requests.post( connection1, data=json.dumps(payload),headers=headers ,verify=False )
+    #connection1 = URL + "/api/public/v6_0/session" 
+    response1 = requests.post( f"{URL}/api/public/v6_0/session", data=json.dumps(payload),headers=headers ,verify=False )
+    #response1 = requests.post( connection1, data=json.dumps(payload),headers=headers ,verify=False )
     cookie =response1.headers["Set-Cookie"]
     headers = {'content-type': 'application/json', 'Cookie': cookie}
     connection2 = URL + "/api/public/v6_0/configuration/backup"
@@ -57,9 +59,15 @@ def smartzone(IP,USER,PASSWORD):
     connection3 = URL + "/api/public/v6_0/configuration/download"
     params = {"backupUUID": backup_id['id']}
     response3 = requests.get( connection3, data=json.dumps(payload), params=params,headers=headers ,verify=False )
-    name_file = "/tmp/" + str(IP)+ "-" + DATE +".txt"
-    file_config = open(name_file, 'wb')
-    file_config.writelines(response3.content)
+    name_file = "/tmp/" + str(IP)+ "-" + DATE +".bak"
+    print(response3.headers.get('content-type'))
+    try:
+        file_config = open(name_file, 'wb')
+        file_config.write(response3.content)
+    except:
+        #print(response3.content)
+        file_config = open(name_file, 'w')
+        file_config.writelines(response3.content)
     file_config.close()
     connection4 = URL + "/api/public/v6_0/configuration/" + backup_id['id']
     response4 = requests.delete( connection4, data=json.dumps(payload),headers=headers ,verify=False )
