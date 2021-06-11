@@ -98,3 +98,7 @@ def batch_backups(BATCH_FILE):
             backup(row['ip'],row['user'],row['password'],row['type'],row['directory'])
         except:
             print (f"Error IP: {row['ip']}")
+
+if __name__ == '__main__':
+    import sys
+    batch_backups(sys.argv[1])
