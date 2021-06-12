@@ -50,6 +50,19 @@ def vyos(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22222):
     file_config.close()
     net_connect.disconnect()
     return name_file
+def cisco_wlc(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
+    from netmiko import ConnectHandler
+    import datetime
+    DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
+    device = { 'device_type':'cisco_wlc_ssh', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
+    net_connect = ConnectHandler(**device)
+    output = net_connect.send_command("show run-config commands")
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
+    file_config = open(name_file, 'w')
+    file_config.writelines(output)
+    file_config.close()
+    net_connect.disconnect()
+    return name_file
 def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     import requests
     import time
@@ -100,6 +113,8 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
             file_backup=smartzone(IP,USER,PASSWORD, DIRECTORY)
         elif "vyos" == TYPE:
             file_backup=vyos(IP,USER,PASSWORD, DIRECTORY)
+        elif "cisco_wlc" == TYPE:
+            file_backup=cisco_wlc(IP,USER,PASSWORD, DIRECTORY)
         print(file_backup)
     except:
         print (f"Error: {IP}")
