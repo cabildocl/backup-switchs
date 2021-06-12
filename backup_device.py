@@ -5,7 +5,7 @@ def cisco_ios(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
     device = { 'device_type':'cisco_ios', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
     net_connect = ConnectHandler(**device)
     output = net_connect.send_command("show runn")
-    name_file = DIRECTORY + str(IP)+ "-" + DATE +".txt"
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
     file_config = open(name_file, 'w')
     file_config.writelines(output)
     file_config.close()
@@ -18,7 +18,7 @@ def cisco_s300(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
     device = { 'device_type':'cisco_s300', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
     net_connect = ConnectHandler(**device)
     output = net_connect.send_command("show runn")
-    name_file = DIRECTORY + str(IP)+ "-" + DATE +".txt"
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
     file_config = open(name_file, 'w')
     file_config.writelines(output)
     file_config.close()
@@ -31,13 +31,13 @@ def huawei(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
     device = { 'device_type':'huawei', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 5}
     net_connect = ConnectHandler(**device)
     output = net_connect.send_command("display current")
-    name_file = DIRECTORY + str(IP)+ "-" + DATE +".txt"
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
     file_config = open(name_file, 'w')
     file_config.writelines(output)
     file_config.close()
     net_connect.disconnect()
     return name_file
-def vyos(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
+def vyos(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22222):
     from netmiko import ConnectHandler
     import datetime
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
@@ -56,7 +56,8 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     import datetime
     import json
     requests.packages.urllib3.disable_warnings()
-    URL = "https://" + IP + ":7443"
+    #URL = "https://" + IP + ":7443"
+    URL = f"https://{IP}:7443"
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
     headers = {'content-type': 'application/json'}
     payload = {'username' : USER, 'password' : PASSWORD}
@@ -65,14 +66,15 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     #response1 = requests.post( connection1, data=json.dumps(payload),headers=headers ,verify=False )
     cookie =response1.headers["Set-Cookie"]
     headers = {'content-type': 'application/json', 'Cookie': cookie}
-    connection2 = URL + "/api/public/v6_0/configuration/backup"
-    response2 = requests.post( connection2, data=json.dumps(payload),headers=headers ,verify=False )
+    #connection2 = URL + "/api/public/v6_0/configuration/backup"
+    response2 = requests.post( f"{URL}/api/public/v6_0/configuration/backup", data=json.dumps(payload),headers=headers ,verify=False )
     backup_id=eval(response2.text)
     time.sleep(180)
-    connection3 = URL + "/api/public/v6_0/configuration/download"
+    #connection3 = URL + "/api/public/v6_0/configuration/download"
     params = {"backupUUID": backup_id['id']}
-    response3 = requests.get( connection3, data=json.dumps(payload), params=params,headers=headers ,verify=False )
-    name_file = DIRECTORY + str(IP)+ "-" + DATE +".bak"
+    response3 = requests.get( f"{URL}/api/public/v6_0/configuration/download", data=json.dumps(payload), params=params,headers=headers ,verify=False )
+    #name_file = DIRECTORY + str(IP)+ "-" + DATE +".bak"
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.bak"
     print(response3.headers.get('content-type'))
     try:
         file_config = open(name_file, 'wb')
@@ -96,6 +98,8 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
             file_backup=huawei(IP,USER,PASSWORD, DIRECTORY)
         elif "smartzone" == TYPE:
             file_backup=smartzone(IP,USER,PASSWORD, DIRECTORY)
+        elif "vyos" == TYPE:
+            file_backup=vyos(IP,USER,PASSWORD, DIRECTORY)
         print(file_backup)
     except:
         print (f"Error: {IP}")
