@@ -37,6 +37,19 @@ def huawei(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
     file_config.close()
     net_connect.disconnect()
     return name_file
+def vyos(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
+    from netmiko import ConnectHandler
+    import datetime
+    DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
+    device = { 'device_type':'vyos', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4}
+    net_connect = ConnectHandler(**device)
+    output = net_connect.send_command("show configuration commands")
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
+    file_config = open(name_file, 'w')
+    file_config.writelines(output)
+    file_config.close()
+    net_connect.disconnect()
+    return name_file
 def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     import requests
     import time
@@ -81,11 +94,11 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
             file_backup=cisco_s300(IP,USER,PASSWORD, DIRECTORY)
         elif "huawei" == TYPE:
             file_backup=huawei(IP,USER,PASSWORD, DIRECTORY)
-        elif "huawei" == TYPE:
+        elif "smartzone" == TYPE:
             file_backup=smartzone(IP,USER,PASSWORD, DIRECTORY)
         print(file_backup)
     except:
-        print (f"Error TYPE: {TYPE}")
+        print (f"Error: {IP}")
 def batch_backups(BATCH_FILE):
     import pandas as pd
     """
