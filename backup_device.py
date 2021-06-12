@@ -74,18 +74,18 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
     headers = {'content-type': 'application/json'}
     payload = {'username' : USER, 'password' : PASSWORD}
-    #connection1 = URL + "/api/public/v6_0/session" 
-    response1 = requests.post( f"{URL}/api/public/v6_0/session", data=json.dumps(payload),headers=headers ,verify=False )
+    #connection1 = URL + "/api/public/v5_1/session" 
+    response1 = requests.post( f"{URL}/api/public/v5_1/session", data=json.dumps(payload),headers=headers ,verify=False )
     #response1 = requests.post( connection1, data=json.dumps(payload),headers=headers ,verify=False )
     cookie =response1.headers["Set-Cookie"]
     headers = {'content-type': 'application/json', 'Cookie': cookie}
-    #connection2 = URL + "/api/public/v6_0/configuration/backup"
-    response2 = requests.post( f"{URL}/api/public/v6_0/configuration/backup", data=json.dumps(payload),headers=headers ,verify=False )
+    #connection2 = URL + "/api/public/v5_1/configuration/backup"
+    response2 = requests.post( f"{URL}/api/public/v5_1/configuration/backup", data=json.dumps(payload),headers=headers ,verify=False )
     backup_id=eval(response2.text)
     time.sleep(180)
-    #connection3 = URL + "/api/public/v6_0/configuration/download"
+    #connection3 = URL + "/api/public/v5_1/configuration/download"
     params = {"backupUUID": backup_id['id']}
-    response3 = requests.get( f"{URL}/api/public/v6_0/configuration/download", data=json.dumps(payload), params=params,headers=headers ,verify=False )
+    response3 = requests.get( f"{URL}/api/public/v5_1/configuration/download", data=json.dumps(payload), params=params,headers=headers ,verify=False )
     #name_file = DIRECTORY + str(IP)+ "-" + DATE +".bak"
     name_file = f"{DIRECTORY}{str(IP)}-{DATE}.bak"
     print(response3.headers.get('content-type'))
@@ -97,7 +97,7 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
         file_config = open(name_file, 'w')
         file_config.writelines(response3.content)
     file_config.close()
-    connection4 = URL + "/api/public/v6_0/configuration/" + backup_id['id']
+    connection4 = URL + "/api/public/v5_1/configuration/" + backup_id['id']
     response4 = requests.delete( connection4, data=json.dumps(payload),headers=headers ,verify=False )
     return name_file
 
