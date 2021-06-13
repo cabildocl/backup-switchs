@@ -63,6 +63,31 @@ def cisco_wlc(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
     file_config.close()
     net_connect.disconnect()
     return name_file
+def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
+    from netmiko import ConnectHandler
+    import paramiko
+    import datetime
+    import time
+    DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
+    device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4}
+    net_connect = ConnectHandler(**device)
+    backup_file = f"{IP}-{DATE}"
+    command = f"/system backup save name={backup_file} dont-encrypt=yes"
+    output = net_connect.send_command(command)
+    time.sleep(3)
+    transport = paramiko.Transport((IP,PORT))
+    transport.connect(None,USER,PASSWORD)
+    sftp = paramiko.SFTPClient.from_transport(transport)
+    name_file = f"{DIRECTORY}{backup_file}.backup"
+    sftp.get(f"{backup_file}.backup",name_file)
+    if sftp:
+        sftp.close()
+    if transport:
+        transport.close()
+    command = f"/file remove {backup_file}.backup"
+    output = net_connect.send_command(command)
+    net_connect.disconnect()
+    return name_file
 def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     import requests
     import time
