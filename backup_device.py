@@ -72,8 +72,7 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
     device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4,'global_cmd_verify':False}
     net_connect = ConnectHandler(**device)
     backup_file = f"{IP}-{DATE}"
-    command = "/system backup save name=" + backup_file + " dont-encrypt=yes"
-    print(command)
+    command = f"/system backup save name={backup_file} dont-encrypt=yes"
     output = net_connect.send_command(command)
     time.sleep(3)
     transport = paramiko.Transport((IP,PORT))
@@ -85,8 +84,7 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
         sftp.close()
     if transport:
         transport.close()
-    command = '/file remove "'  + backup_file + '.backup"'
-    print(command)
+    command = f'/file remove "{backup_file}.backup"'
     output = net_connect.send_command(command)
     net_connect.disconnect()
     return name_file
@@ -142,6 +140,8 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
             file_backup=vyos(IP,USER,PASSWORD, DIRECTORY)
         elif "cisco_wlc" == TYPE:
             file_backup=cisco_wlc(IP,USER,PASSWORD, DIRECTORY)
+        elif "mikrotik" == TYPE:
+            file_backup=mikrotik(IP,USER,PASSWORD, DIRECTORY)
         print(file_backup)
     except:
         print (f"Error: {IP}")
