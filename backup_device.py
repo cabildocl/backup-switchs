@@ -85,7 +85,7 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
         sftp.close()
     if transport:
         transport.close()
-    command = "/file remove "  + backup_file + ".backup"
+    command = '/file remove "'  + backup_file + ''.backup"'
     print(command)
     output = net_connect.send_command(command)
     net_connect.disconnect()
