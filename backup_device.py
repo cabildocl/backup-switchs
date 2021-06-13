@@ -69,13 +69,12 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
     import datetime
     import time
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
-    device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4}
+    device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4,'global_cmd_verify':False'}
     net_connect = ConnectHandler(**device)
     backup_file = f"{IP}-{DATE}"
     command = "/system backup save name=" + backup_file + " dont-encrypt=yes"
     print(command)
     output = net_connect.send_command(command)
-    net_connect.disconnect()
     time.sleep(3)
     transport = paramiko.Transport((IP,PORT))
     transport.connect(None,USER,PASSWORD)
@@ -86,7 +85,6 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
         sftp.close()
     if transport:
         transport.close()
-    net_connect = ConnectHandler(**device)
     command = "/file remove "  + backup_file + ".backup"
     print(command)
     output = net_connect.send_command(command)
