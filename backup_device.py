@@ -85,6 +85,7 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
     if transport:
         transport.close()
     command = f"/file remove {backup_file}.backup"
+    print(command)
     output = net_connect.send_command(command)
     net_connect.disconnect()
     return name_file
