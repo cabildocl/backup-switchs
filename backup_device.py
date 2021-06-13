@@ -69,7 +69,7 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
     import datetime
     import time
     DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
-    device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4,'global_cmd_verify':False'}
+    device = { 'device_type':'mikrotik_routeros', 'ip':IP, 'username':USER, 'password':PASSWORD, 'port':PORT,'global_delay_factor': 4,'global_cmd_verify':False}
     net_connect = ConnectHandler(**device)
     backup_file = f"{IP}-{DATE}"
     command = "/system backup save name=" + backup_file + " dont-encrypt=yes"
