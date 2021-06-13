@@ -1,4 +1,15 @@
 # backup-switch
-script for backup. You need to have a csv file with ip, type, user and password to your devices.
+script for backup. You need to have a csv file with ip, type, user, password and directory of backup to your devices.
 
-python3 backup-switch.py listado.csv
+python3 backup_device.py listado.csv
+
+Is support:
+    - cisco_ios 
+    - cisco_s300
+    - cisco_wlc
+    - huawei
+    - smartzone
+    - vyos
+    - fortinet
+
+

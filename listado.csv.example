@@ -1,3 +1,3 @@
-ip,tipo,usuario,clave
-192.168.0.1,cisco_ios,user,password
-192.168.0.2,cisco_s300,user,password
+name,ip,type,user,password,directory
+192.168.0.1,cisco_ios,user,password,"/tmp/"
+192.168.0.2,cisco_s300,user,password,"/tmp/"
