@@ -88,6 +88,19 @@ def mikrotik(IP, USER, PASSWORD, DIRECTORY="/tmp/", PORT=22):
     output = net_connect.send_command(command)
     net_connect.disconnect()
     return name_file
+def fortinet(IP, USER, PASSWORD, DIRECTORY="/tmp/"):
+    from netmiko import ConnectHandler
+    import datetime
+    DATE = str(datetime.datetime.today().strftime('%Y-%m-%d'))
+    device = { 'device_type':'fortinet', 'ip':IP, 'username':USER, 'password':PASSWORD,'global_delay_factor': 4}
+    net_connect = ConnectHandler(**device)
+    output = net_connect.send_command("show full-configuration")
+    name_file = f"{DIRECTORY}{str(IP)}-{DATE}.txt"
+    file_config = open(name_file, 'w')
+    file_config.writelines(output)
+    file_config.close()
+    net_connect.disconnect()
+    return name_file
 def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     import requests
     import time
@@ -142,6 +155,8 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
             file_backup=cisco_wlc(IP,USER,PASSWORD, DIRECTORY)
         elif "mikrotik" == TYPE:
             file_backup=mikrotik(IP,USER,PASSWORD, DIRECTORY)
+        elif "fortinet" == TYPE:
+            file_backup=fortinet(IP,USER,PASSWORD, DIRECTORY)
         print(file_backup)
     except:
         print (f"Error: {IP}")
