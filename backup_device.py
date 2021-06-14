@@ -116,6 +116,7 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     response1 = requests.post( f"{URL}/api/public/v5_1/session", data=json.dumps(payload),headers=headers ,verify=False )
     #response1 = requests.post( connection1, data=json.dumps(payload),headers=headers ,verify=False )
     cookie =response1.headers["Set-Cookie"]
+    print(response1.text)
     headers = {'content-type': 'application/json', 'Cookie': cookie}
     connection2 = URL + "/api/public/v5_1/configuration/backup"
     #response2 = requests.post( f"{URL}/api/public/v5_1/configuration/backup", data=json.dumps(payload),headers=headers ,verify=False )
