@@ -119,6 +119,7 @@ def smartzone(IP,USER,PASSWORD, DIRECTORY="/tmp/"):
     headers = {'content-type': 'application/json', 'Cookie': cookie}
     #connection2 = URL + "/api/public/v5_1/configuration/backup"
     response2 = requests.post( f"{URL}/api/public/v5_1/configuration/backup", data=json.dumps(payload),headers=headers ,verify=False )
+    print(response2.text)
     backup_id=eval(response2.text)
     time.sleep(180)
     #connection3 = URL + "/api/public/v5_1/configuration/download"
