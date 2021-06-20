@@ -1,0 +1,234 @@
+
+config-file-header
+SW-WiFi-G02
+v2.4.0.91 / RTESLA2.4_930_181_042
+CLI v1.0
+file SSD indicator encrypted
+@
+ssd-control-start
+ssd config
+ssd file passphrase control unrestricted
+no ssd file integrity control
+ssd-control-end cb0a3fdb1f3a1af4e4430033719968c0
+!
+!
+unit-type-control-start
+unit-type unit 1 network gi uplink te
+unit-type unit 2 network gi uplink te
+unit-type unit 3 network gi uplink te
+unit-type unit 4 network gi uplink te
+unit-type-control-end
+!
+cdp device-id format hostname
+vlan database
+vlan 200,300,400,666,715
+exit
+voice vlan oui-table add 0001e3 Siemens_AG_phone________
+voice vlan oui-table add 00036b Cisco_phone_____________
+voice vlan oui-table add 00096e Avaya___________________
+voice vlan oui-table add 000fe2 H3C_Aolynk______________
+voice vlan oui-table add 0060b9 Philips_and_NEC_AG_phone
+voice vlan oui-table add 00d01e Pingtel_phone___________
+voice vlan oui-table add 00e075 Polycom/Veritel_phone___
+voice vlan oui-table add 00e0bb 3Com_phone______________
+no ip routing
+bonjour interface range vlan 1
+hostname SW-WiFi-G02
+passwords aging 0
+username cisco password encrypted 9a10af36a29548ab6d2041cb4413c839c5a0ad65 privilege 15
+username noc_admin password encrypted b41405c15d9a10861a6bec680e6d7a5ef9069387 privilege 15
+username noc_ronly password encrypted c5a0c906ee672c9656ebcd53d839b27c154f6274
+username noc_operaciones password encrypted 92561efc743a9497e3404ae97b5392d2e88385ea privilege 7
+ip ssh server
+ip ssh password-auth
+snmp-server server
+snmp-server location SALA-DATOS
+snmp-server contact Raytel.Telecomunicaciones
+snmp-server community mpls*2oi8 ro view Default
+ip telnet server
+!
+interface vlan 1
+ no ip address dhcp
+ shutdown
+!
+interface vlan 200
+ name GST-Switchs
+ ip address 172.22.126.4 255.255.255.0
+!
+interface vlan 300
+ name GST-Wifi
+ shutdown
+!
+interface vlan 400
+ name Wifi-Cliente
+ shutdown
+!
+interface vlan 666
+ name Dummy
+ shutdown
+!
+interface vlan 715
+ name SSID-IdD
+ shutdown
+!
+interface GigabitEthernet1/0/1
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/2
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/3
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/4
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/5
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/6
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/7
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/8
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/9
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/10
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/11
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/12
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/13
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/14
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/15
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/16
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/17
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/18
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/19
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/20
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/21
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/22
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/23
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface GigabitEthernet1/0/24
+ shutdown
+ description Interfaces-sin-Uso
+ switchport access vlan 666
+!
+interface TengigabitEthernet1/0/1
+ description CX_SWs
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-714
+ switchport trunk allowed vlan remove 716-4094
+!
+interface TengigabitEthernet1/0/2
+ description CX_SWs
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-714
+ switchport trunk allowed vlan remove 716-4094
+!
+interface TengigabitEthernet1/0/3
+ description CX_SWs
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-4094
+!
+interface TengigabitEthernet1/0/4
+ description CX_SWs
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-4094
+!
+exit
+macro auto disabled
+ip default-gateway 172.22.126.1

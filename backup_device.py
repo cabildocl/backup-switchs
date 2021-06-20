@@ -163,6 +163,7 @@ def backup(IP,USER,PASSWORD, TYPE, DIRECTORY="/tmp/"):
         print(file_backup)
     except:
         print (f"Error: {IP}")
+    return file_backup
 def batch_backups(BATCH_FILE):
     import pandas as pd
     """

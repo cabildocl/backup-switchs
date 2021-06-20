@@ -1,0 +1,323 @@
+
+config-file-header
+SW-WiFi-G01
+v2.4.0.91 / RTESLA2.4_930_181_042
+CLI v1.0
+file SSD indicator encrypted
+@
+ssd-control-start
+ssd config
+ssd file passphrase control unrestricted
+no ssd file integrity control
+ssd-control-end cb0a3fdb1f3a1af4e4430033719968c0
+!
+!
+unit-type-control-start
+unit-type unit 1 network gi uplink te
+unit-type unit 2 network gi uplink te
+unit-type unit 3 network gi uplink te
+unit-type unit 4 network gi uplink te
+unit-type-control-end
+!
+cdp device-id format hostname
+vlan database
+vlan 200,300,400,666,715
+exit
+voice vlan oui-table add 0001e3 Siemens_AG_phone________
+voice vlan oui-table add 00036b Cisco_phone_____________
+voice vlan oui-table add 00096e Avaya___________________
+voice vlan oui-table add 000fe2 H3C_Aolynk______________
+voice vlan oui-table add 0060b9 Philips_and_NEC_AG_phone
+voice vlan oui-table add 00d01e Pingtel_phone___________
+voice vlan oui-table add 00e075 Polycom/Veritel_phone___
+voice vlan oui-table add 00e0bb 3Com_phone______________
+errdisable recovery interval 30
+no ip routing
+bonjour interface range vlan 1
+hostname SW-WiFi-G01
+no passwords complexity enable
+passwords aging 0
+username noc_admin password encrypted b41405c15d9a10861a6bec680e6d7a5ef9069387 privilege 15
+username noc_ronly password encrypted c5a0c906ee672c9656ebcd53d839b27c154f6274
+username noc_operaciones password encrypted 92561efc743a9497e3404ae97b5392d2e88385ea privilege 7
+power inline limit-mode port
+ip ssh server
+ip ssh password-auth
+snmp-server server
+snmp-server location SALA-DATOS
+snmp-server contact Raytel.Telecomunicaciones
+snmp-server community mpls*2oi8 ro view Default
+ip telnet server
+!
+interface vlan 1
+ no ip address dhcp
+ shutdown
+!
+interface vlan 200
+ name GST-Switchs
+ ip address 172.22.126.3 255.255.255.0
+!
+interface vlan 300
+ name GST-Wifi
+ shutdown
+!
+interface vlan 400
+ name Wifi-Cliente
+ shutdown
+!
+interface vlan 666
+ name dummy
+ shutdown
+!
+interface vlan 715
+ name SSID-IdD
+ shutdown
+!
+interface GigabitEthernet1/0/1
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 20000
+ power inline priority high
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/2
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/3
+ description CX_AP
+ no spanning-tree portfast
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/4
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/5
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/6
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 15000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/7
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 15000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/8
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-714,716-4094
+ power inline limit 15000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/9
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/10
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/11
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/12
+ description CX_AP
+ spanning-tree guard root
+ spanning-tree bpduguard enable
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline limit 20000
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/13
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/14
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/15
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/16
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/17
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/18
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/19
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/20
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/21
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/22
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/23
+ description CX_AP
+ switchport mode trunk
+ switchport trunk native vlan 300
+ switchport trunk allowed vlan remove 1-299,301-399,401-4094
+ power inline never
+ no macro auto smartport
+!
+interface GigabitEthernet1/0/24
+ description CX_SW-WiFi-G01-II
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-714
+ switchport trunk allowed vlan remove 716-4094
+ power inline never
+ no macro auto smartport
+!
+interface TengigabitEthernet1/0/1
+ description CX-SW
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-714
+ switchport trunk allowed vlan remove 716-4094
+!
+interface TengigabitEthernet1/0/2
+ description CX-SW
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-714
+ switchport trunk allowed vlan remove 716-4094
+!
+interface TengigabitEthernet1/0/3
+ description CX-SW
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-4094
+!
+interface TengigabitEthernet1/0/4
+ description CX-SW
+ switchport mode trunk
+ switchport trunk native vlan 200
+ switchport trunk allowed vlan remove 1-199,201-299,301-399,401-4094
+!
+exit
+macro auto disabled
+ip default-gateway 172.22.126.1
