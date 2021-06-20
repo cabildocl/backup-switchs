@@ -1,4 +1,4 @@
-def telegram_backups(BATCH_FILE):
+def telegram_backups(BATCH_FILE,CONFIG_FILE="./config.ini"):
     from telegramsend import telegramsend, telegramsendfile
     from backup_device import backup
     import pandas as pd
@@ -9,7 +9,7 @@ def telegram_backups(BATCH_FILE):
     import os
     #load variables
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(CONFIG_FILE)
     #variables
     token_id = config["CONFIG"]["TOKEN_ID"]
     group_id = config["CONFIG"]["GROUP_ID"]
@@ -37,4 +37,4 @@ def telegram_backups(BATCH_FILE):
     return 0
 if __name__ == '__main__':
     import sys
-    telegram_backups(sys.argv[1])
+    telegram_backups(sys.argv[1],sys.argv[2])
